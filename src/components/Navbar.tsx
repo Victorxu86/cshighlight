@@ -57,21 +57,21 @@ export default function Navbar() {
                  href={item.path}
                  className="relative h-full flex-1 flex items-center justify-center group no-underline"
                >
-                 {/* Text: White only, no underline */}
+                 {/* Text: White only, no underline, smoother scale */}
                  <span 
                     className={cn(
-                        "font-display text-xs font-bold uppercase tracking-[0.2em] relative z-10 transition-all duration-300 no-underline transform",
-                        "text-white group-hover:text-[#d8b4fe] group-hover:scale-105"
+                        "font-display text-xs font-bold uppercase tracking-[0.2em] relative z-10 transition-all duration-500 ease-out no-underline transform",
+                        "text-white group-hover:text-[#d8b4fe] group-hover:scale-110"
                     )}
                  >
                    {item.name}
                  </span>
                  
-                 {/* Active Line - Positioned at 43px from top (3px below 40px header) */}
+                 {/* Active Line - Moved to 45px, Shortened width (centered) */}
                  {isActive && (
                     <motion.div 
                       layoutId="navline-active" 
-                      className="absolute top-[43px] left-0 w-full h-[2px] bg-[#de9b35] shadow-[0_0_10px_#de9b35] z-50"
+                      className="absolute top-[45px] left-0 right-0 mx-auto w-1/2 h-[2px] bg-[#de9b35] shadow-[0_0_10px_#de9b35] z-50"
                       initial={false}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
