@@ -31,23 +31,23 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 border-b",
         scrolled 
-            ? "bg-[#050507]/90 backdrop-blur-xl h-24 border-white/10" 
-            : "bg-transparent h-32 border-white/5"
+            ? "bg-[#050507]/95 backdrop-blur-xl h-32 border-white/10" 
+            : "bg-transparent h-48 border-white/5"
       )}
     >
-      <div className="w-full h-full max-w-[1920px] mx-auto px-8 md:px-16 grid grid-cols-12 items-center">
+      <div className="w-full h-full max-w-[1920px] mx-auto px-8 md:px-16 grid grid-cols-12 items-center relative">
         
         {/* Left: Brand (Col 1-3) */}
         <div className="col-span-3 flex items-center">
             <Link href="/" className="flex flex-col leading-none group">
-                <span className="font-display font-bold text-3xl tracking-tight uppercase text-white group-hover:text-[#7c3aed] transition-colors duration-300">
+                <span className="font-display font-black text-4xl tracking-tight uppercase text-white group-hover:text-[#7c3aed] transition-colors duration-300">
                   Sonic<span className="text-[#5d79ae] group-hover:text-white transition-colors duration-300">Remains</span>
                 </span>
             </Link>
         </div>
 
-        {/* Center: Navigation (Col 4-9) - Evenly Distributed */}
-        <nav className="col-span-6 h-full flex items-center justify-between px-8">
+        {/* Center: Navigation (Col 4-9) */}
+        <nav className="col-span-6 h-full flex items-center justify-between px-4">
           {navItems.map((item) => {
              const isActive = pathname === item.path;
              return (
@@ -57,17 +57,17 @@ export default function Navbar() {
                  className="relative h-full flex-1 flex items-center justify-center group"
                >
                  <span className={cn(
-                   "font-tech text-sm font-bold uppercase tracking-[0.2em] relative z-10 transition-all duration-300 transform group-hover:scale-110",
-                   isActive ? "text-[#de9b35]" : "text-white group-hover:text-[#a78bfa]" // Pale Purple Hover
+                   "font-display text-lg font-black uppercase tracking-[0.15em] relative z-10 transition-all duration-300 transform group-hover:scale-110 group-hover:text-[#a78bfa]",
+                   isActive ? "text-white" : "text-white" // Always White base
                  )}>
                    {item.name}
                  </span>
                  
-                 {/* Active Line Bottom */}
+                 {/* Active Line Bottom - Aligned to very bottom of navbar */}
                  {isActive && (
                     <motion.div 
                       layoutId="navline-active" 
-                      className="absolute bottom-0 left-0 w-full h-[3px] bg-[#de9b35] shadow-[0_0_10px_#de9b35]"
+                      className="absolute bottom-0 left-0 w-full h-[6px] bg-[#de9b35] shadow-[0_0_20px_#de9b35]"
                     />
                  )}
                </Link>
@@ -75,10 +75,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right: Spacer / Future Actions (Col 10-12) */}
-        <div className="col-span-3 flex justify-end">
-             {/* Optional: Add social icons or search here later */}
-        </div>
+        {/* Right: Spacer (Col 10-12) */}
+        <div className="col-span-3" />
 
       </div>
     </motion.header>
