@@ -17,20 +17,25 @@ export default function LandingSection() {
       </div>
 
       {/* Fuzzy Background Text: COUNTER STRIKE */}
-      <div className="absolute inset-0 flex items-center justify-center z-0 select-none pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-0 select-none pointer-events-none overflow-hidden">
         <motion.div
            initial={{ opacity: 0, scale: 1.1 }}
            animate={{ opacity: 1, scale: 1 }}
            transition={{ duration: 1.5, ease: "easeOut" }}
-           className="whitespace-nowrap"
+           className="flex flex-col items-center leading-none"
         >
-            <h1 className="text-[15vw] md:text-[12vw] font-black text-white/5 tracking-tighter blur-sm md:blur-md scale-y-110 transform mix-blend-overlay">
-            COUNTER STRIKE
+            {/* COUNTER */}
+            <h1 className="text-[18vw] md:text-[15vw] font-black text-white/10 tracking-tighter blur-sm translate-x-[-5%] scale-y-110 transform mix-blend-overlay">
+              COUNTER
+            </h1>
+            {/* STRIKE */}
+            <h1 className="text-[18vw] md:text-[15vw] font-black text-white/10 tracking-tighter blur-sm translate-x-[5%] -mt-[4vw] scale-y-110 transform mix-blend-overlay">
+              STRIKE
             </h1>
         </motion.div>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center text-center max-w-4xl">
+      <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mt-12">
         {/* Main Title: Sonic Remains */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
