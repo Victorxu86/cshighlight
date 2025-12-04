@@ -13,6 +13,8 @@ const navItems = [
   { name: 'Analysis', path: '/analysis' },
 ];
 
+const MotionLink = motion.create(Link);
+
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -40,9 +42,9 @@ export default function Navbar() {
         
         {/* Left: Brand (Col 1-3) */}
         <div className="col-span-3 flex items-center h-full">
-            <Link href="/" className="flex items-center h-full group">
-                <span className="font-display font-black text-lg tracking-tight uppercase text-white group-hover:text-[#d8b4fe] transition-colors duration-300 no-underline">
-                  Sonic<span className="text-[#5d79ae] group-hover:text-white transition-colors duration-300 no-underline">Remains</span>
+            <Link href="/" className="flex items-center h-full group text-white">
+                <span className="font-display font-black text-lg tracking-tight uppercase text-white group-hover:text-[#d8b4fe] transition-colors duration-300">
+                  Sonic<span className="text-[#5d79ae] group-hover:text-white transition-colors duration-300">Remains</span>
                 </span>
             </Link>
         </div>
@@ -52,22 +54,26 @@ export default function Navbar() {
           {navItems.map((item) => {
              const isActive = pathname === item.path;
              return (
-               <Link 
+               <MotionLink 
                  key={item.path} 
                  href={item.path}
-                 className="relative h-full flex-1 flex items-center justify-center group no-underline"
+                 initial="initial"
+                 whileHover="hover"
+                 className="relative h-full flex-1 flex items-center justify-center group"
                >
-                 {/* Text: White only, no underline, smoother scale */}
-                 <span 
-                    className={cn(
-                        "font-display text-xs font-bold uppercase tracking-[0.2em] relative z-10 transition-all duration-500 ease-out no-underline transform",
-                        "text-white group-hover:text-[#d8b4fe] group-hover:scale-110"
-                    )}
+                 {/* Text */}
+                 <motion.span 
+                    variants={{
+                      initial: { scale: 1, color: "#FFFFFF" },
+                      hover: { scale: 1.1, color: "#d8b4fe" }
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                    className="font-display text-xs font-bold uppercase tracking-[0.2em] relative z-10"
                  >
                    {item.name}
-                 </span>
+                 </motion.span>
                  
-                 {/* Active Line - Moved to 45px, Shortened width (centered) */}
+                 {/* Active Line - Positioned at 45px */}
                  {isActive && (
                     <motion.div 
                       layoutId="navline-active" 
@@ -76,7 +82,7 @@ export default function Navbar() {
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
                  )}
-               </Link>
+               </MotionLink>
              )
           })}
         </nav>
