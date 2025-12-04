@@ -1,25 +1,13 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
 export default function Home() {
   const containerRef = useRef(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  // Parallax Mouse Effect - Toned down slightly for elegance
-  useEffect(() => {
-    const updateMouse = (e: MouseEvent) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 20;
-        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-        setMousePosition({ x, y });
-    };
-    window.addEventListener('mousemove', updateMouse);
-    return () => window.removeEventListener('mousemove', updateMouse);
-  }, []);
+  // Removed mouse parallax state and effect completely
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -28,21 +16,20 @@ export default function Home() {
 
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
     <div ref={containerRef} className="relative min-h-screen bg-[#050507] overflow-hidden">
       <Navbar />
 
       {/* === HERO SECTION === */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden perspective-1000">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
          
-         {/* Background: "SONIC REMAINS" - More Visible Now */}
+         {/* Background: "SONIC REMAINS" */}
          <motion.div 
-            style={{ y: bgY, x: mousePosition.x * -0.3 }}
+            style={{ y: bgY }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0"
          >
-             <h1 className="font-display font-bold text-[18vw] leading-none text-[#7c3aed] opacity-60 blur-[8px] animate-pulse tracking-tighter mix-blend-screen">
+             <h1 className="font-display font-bold text-[18vw] leading-none text-[#7c3aed] opacity-40 blur-[4px] tracking-tighter mix-blend-screen">
                  SONIC<br/>REMAINS
              </h1>
          </motion.div>
@@ -56,14 +43,14 @@ export default function Home() {
 
          {/* Front Layer: "COUNTER STRIKE" Impact Text */}
          <motion.div 
-            style={{ y: textY, x: mousePosition.x }}
+            style={{ y: textY }}
             className="relative z-20 text-center flex flex-col items-center max-w-[90vw]"
          >
              <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="flex items-center gap-4 mb-6"
+                className="flex items-center gap-4 mb-2 md:mb-6"
              >
                 <div className="h-[1px] w-12 bg-[#de9b35]" />
                 <span className="font-tech text-[#de9b35] uppercase tracking-[0.3em] text-xs">Project Archive 2025</span>
@@ -71,6 +58,11 @@ export default function Home() {
              </motion.div>
 
              <div className="relative">
+                 {/* Hard Shadow Layer for Visibility */}
+                 <h2 className="absolute top-2 left-2 font-display font-black text-[12vw] md:text-[13vw] leading-[0.8] tracking-tighter text-black opacity-80 pointer-events-none select-none" aria-hidden="true">
+                    COUNTER<br/>STRIKE
+                 </h2>
+
                  <motion.h2 
                     initial={{ scale: 1.1, opacity: 0, filter: "blur(10px)" }}
                     animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
@@ -85,20 +77,20 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1, duration: 1 }}
-                className="mt-12"
+                className="mt-12 md:mt-16"
              >
-                 <p className="font-sans text-neutral-400 text-lg md:text-xl max-w-2xl font-light leading-relaxed text-center">
+                 <p className="font-sans text-neutral-400 text-lg md:text-xl max-w-2xl font-light leading-relaxed text-center px-4">
                      An auditory excavation of <span className="text-[#5d79ae] font-medium">shoutcasting monuments</span> and <span className="text-[#de9b35] font-medium">virtual graffiti</span>.
                  </p>
                  
-                 {/* Arrow Down Indicator - Replacing Buttons */}
+                 {/* Arrow Down Indicator */}
                  <motion.div 
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="mt-16 flex flex-col items-center gap-2 text-neutral-500"
+                    className="mt-20 flex flex-col items-center gap-3 text-neutral-500"
                  >
-                    <span className="font-tech text-[10px] uppercase tracking-[0.3em]">Explore Archive</span>
-                    <div className="w-[1px] h-12 bg-gradient-to-b from-[#de9b35] to-transparent" />
+                    <span className="font-tech text-[10px] uppercase tracking-[0.3em] text-white/60">Explore Archive</span>
+                    <ArrowDown className="w-5 h-5 text-[#de9b35]" />
                  </motion.div>
              </motion.div>
          </motion.div>
