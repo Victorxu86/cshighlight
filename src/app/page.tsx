@@ -4,11 +4,11 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import { ArrowDown } from 'lucide-react';
+import ManifestoSection1 from '@/components/ManifestoSection1';
 
 export default function Home() {
   const containerRef = useRef(null);
-  // Removed mouse parallax state and effect completely
-
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -18,11 +18,11 @@ export default function Home() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-[#050507] overflow-hidden">
+    <main className="bg-[#050507] text-white overflow-x-hidden">
       <Navbar />
 
       {/* === HERO SECTION === */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <div ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden">
          
          {/* Background: "SONIC REMAINS" */}
          <motion.div 
@@ -94,7 +94,13 @@ export default function Home() {
                  </motion.div>
              </motion.div>
          </motion.div>
-      </section>
-    </div>
+      </div>
+
+      {/* === MANIFESTO SECTION === */}
+      <div id="manifesto">
+        <ManifestoSection1 />
+      </div>
+
+    </main>
   );
 }
