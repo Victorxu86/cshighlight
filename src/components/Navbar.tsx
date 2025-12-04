@@ -31,43 +31,50 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 border-b",
         scrolled 
-            ? "bg-[#050507]/95 backdrop-blur-xl h-32 border-white/10" 
-            : "bg-transparent h-48 border-white/5"
+            ? "bg-[#050507]/95 backdrop-blur-xl h-28 border-white/10" 
+            : "bg-transparent h-36 border-white/5"
       )}
     >
-      <div className="w-full h-full max-w-[1920px] mx-auto px-8 md:px-16 grid grid-cols-12 items-center relative">
+      <div className="w-full h-full max-w-[1800px] mx-auto px-8 md:px-16 flex items-center justify-between relative">
         
-        {/* Left: Brand (Col 1-3) */}
-        <div className="col-span-3 flex items-center">
+        {/* Left: Brand */}
+        <div className="flex-shrink-0">
             <Link href="/" className="flex flex-col leading-none group">
-                <span className="font-display font-black text-4xl tracking-tight uppercase text-white group-hover:text-[#7c3aed] transition-colors duration-300">
+                <span className="font-display font-black text-3xl tracking-tight uppercase text-white group-hover:text-[#7c3aed] transition-colors duration-300">
                   Sonic<span className="text-[#5d79ae] group-hover:text-white transition-colors duration-300">Remains</span>
                 </span>
             </Link>
         </div>
 
-        {/* Center: Navigation (Col 4-9) */}
-        <nav className="col-span-6 h-full flex items-center justify-between px-4">
+        {/* Center: Navigation - Evenly Distributed */}
+        <nav className="absolute left-1/2 transform -translate-x-1/2 h-full flex items-center gap-12 md:gap-24">
           {navItems.map((item) => {
              const isActive = pathname === item.path;
              return (
                <Link 
                  key={item.path} 
                  href={item.path}
-                 className="relative h-full flex-1 flex items-center justify-center group"
+                 className="relative h-full flex items-center justify-center group min-w-[100px]"
                >
+                 {/* Text Label */}
                  <span className={cn(
-                   "font-display text-lg font-black uppercase tracking-[0.15em] relative z-10 transition-all duration-300 transform group-hover:scale-110 group-hover:text-[#a78bfa]",
-                   isActive ? "text-white" : "text-white" // Always White base
+                   "font-display text-xl font-black uppercase tracking-[0.1em] relative z-10 transition-all duration-300 transform group-hover:scale-105",
+                   isActive ? "text-white" : "text-white/80 group-hover:text-white"
                  )}>
                    {item.name}
                  </span>
                  
-                 {/* Active Line Bottom - Aligned to very bottom of navbar */}
+                 {/* Hover Glow - Subtle Purple */}
+                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    <div className="w-12 h-12 bg-[#7c3aed] rounded-full blur-[40px] opacity-40" />
+                 </div>
+                 
+                 {/* Active Line - Bottom of Header */}
                  {isActive && (
                     <motion.div 
                       layoutId="navline-active" 
-                      className="absolute bottom-0 left-0 w-full h-[6px] bg-[#de9b35] shadow-[0_0_20px_#de9b35]"
+                      className="absolute bottom-0 left-0 right-0 h-[6px] bg-[#de9b35] shadow-[0_0_20px_#de9b35]"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                  )}
                </Link>
@@ -75,8 +82,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right: Spacer (Col 10-12) */}
-        <div className="col-span-3" />
+        {/* Right: Spacer to balance layout */}
+        <div className="flex-shrink-0 w-[140px]" /> 
 
       </div>
     </motion.header>
