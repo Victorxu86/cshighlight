@@ -9,7 +9,7 @@
 
 body {
   color: #e5e5e5;
-  background: #0a0a0a;
+  background: #050505; /* Slightly darker for contrast with grid */
   font-family: var(--font-inter);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,7 +31,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #404040;
+  background: #fbbf24; /* Amber highlight on scroll */
 }
 
 /* Smooth Scrolling */
@@ -44,3 +44,18 @@ html {
   font-family: var(--font-playfair);
 }
 
+/* Global Utilities */
+.text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.text-glow-accent {
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.bg-grid-small {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}

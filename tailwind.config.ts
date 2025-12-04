@@ -11,16 +11,23 @@ const config: Config = {
       colors: {
         background: "#0a0a0a", // Deep dark background
         foreground: "#e5e5e5", // Soft white for text
-        muted: "#737373", // Muted gray for secondary text
-        accent: "#d4d4d4", // Light gray for accents
+        muted: "#a3a3a3", // Lighter muted for better readability (was #737373)
+        accent: {
+            DEFAULT: "#fbbf24", // Amber-400: The "Highlight" Gold
+            glow: "rgba(251, 191, 36, 0.5)",
+        }, 
         border: "#262626", // Dark gray for borders
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
-        serif: ["var(--font-playfair)", "serif"], // For that "editorial" feel
+        serif: ["var(--font-playfair)", "serif"],
+      },
+      backgroundImage: {
+        'grid-pattern': "linear-gradient(to right, #262626 1px, transparent 1px), linear-gradient(to bottom, #262626 1px, transparent 1px)",
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out forwards',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {
@@ -33,4 +40,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
