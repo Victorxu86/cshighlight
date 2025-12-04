@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { name: 'Home', path: '/' },
-  { name: 'Manifesto', path: '#manifesto' },
   { name: 'Gallery', path: '/highlights' },
   { name: 'Analysis', path: '/analysis' },
 ];
