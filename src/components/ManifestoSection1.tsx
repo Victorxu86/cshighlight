@@ -1,216 +1,259 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Target, Globe, Mic, ChevronRight, ChevronLeft } from 'lucide-react';
 
-// --- SVG Visual Components ---
-
-const ReticleSVG = () => (
-  <motion.svg 
-    viewBox="0 0 100 100" 
-    className="w-full h-full opacity-30"
-    animate={{ rotate: 360 }}
-    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-  >
-    <circle cx="50" cy="50" r="48" stroke="#5d79ae" strokeWidth="0.5" fill="none" />
-    <circle cx="50" cy="50" r="30" stroke="#5d79ae" strokeWidth="0.5" fill="none" strokeDasharray="4 4" />
-    <line x1="50" y1="0" x2="50" y2="100" stroke="#5d79ae" strokeWidth="0.5" />
-    <line x1="0" y1="50" x2="100" y2="50" stroke="#5d79ae" strokeWidth="0.5" />
-    <rect x="48" y="48" width="4" height="4" fill="#de9b35" />
-  </motion.svg>
-);
-
-const GlobeWireframeSVG = () => (
-  <motion.svg 
-    viewBox="0 0 100 100" 
-    className="w-full h-full opacity-30"
-  >
-    <motion.circle 
-        cx="50" cy="50" r="40" 
-        stroke="#de9b35" strokeWidth="0.5" fill="none" 
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        transition={{ duration: 2 }}
-    />
-    <motion.ellipse 
-        cx="50" cy="50" rx="40" ry="15" 
-        stroke="#de9b35" strokeWidth="0.5" fill="none" 
-        animate={{ rotateX: [0, 180, 360] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-    />
-    <motion.ellipse 
-        cx="50" cy="50" rx="15" ry="40" 
-        stroke="#de9b35" strokeWidth="0.5" fill="none" 
-        animate={{ rotateY: [0, 180, 360] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-    />
-  </motion.svg>
-);
-
-const WaveformSVG = () => (
-  <div className="flex items-end justify-center gap-1 w-full h-full opacity-40">
-      {[...Array(12)].map((_, i) => (
-          <motion.div 
-            key={i}
-            className="w-1 md:w-2 bg-[#7c3aed]"
-            animate={{ height: ["20%", "80%", "20%"] }}
-            transition={{ 
-                duration: 1, 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                delay: i * 0.1,
-                repeatDelay: Math.random() * 0.5
-            }}
-          />
-      ))}
-  </div>
-);
-
-// --- Editorial Block Component ---
-
-const EditorialBlock = ({
-  number,
-  title,
-  subtitle,
-  description,
-  align = 'left',
-  visual,
-  offsetY = 0,
-}: {
-  number: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  align?: 'left' | 'right' | 'center';
-  visual: React.ReactNode;
-  offsetY?: any; // motion value
-}) => {
-    const isRight = align === 'right';
-    const isCenter = align === 'center';
-
-    return (
-        <div className={cn(
-            "relative w-full min-h-[70vh] flex items-center my-32 md:my-0",
-            isRight ? "justify-end" : isCenter ? "justify-center" : "justify-start"
-        )}>
-            {/* Parallax Container */}
-            <motion.div 
-                style={{ y: offsetY }}
-                className={cn(
-                    "relative w-full md:w-[70%] lg:w-[60%] p-8 md:p-16 bg-black/20 backdrop-blur-sm border-t border-white/10",
-                    isRight ? "md:mr-12 border-r border-white/5" : isCenter ? "border-x border-white/5" : "md:ml-12 border-l border-white/5"
-                )}
-            >
-                 {/* Background Visual (Absolute) */}
-                 <div className="absolute right-0 top-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px] -z-10 pointer-events-none overflow-hidden">
-                    {visual}
-                 </div>
-
-                 {/* Editorial Layout */}
-                 <div className="relative z-10">
-                    <div className="flex items-baseline gap-4 mb-6 border-b border-white/10 pb-6">
-                        <span className="font-display font-bold text-6xl md:text-9xl text-transparent text-stroke opacity-30">
-                            {number}
-                        </span>
-                        <span className="font-tech text-[#de9b35] uppercase tracking-[0.3em] text-sm md:text-base">
-                            {subtitle}
-                        </span>
-                    </div>
-
-                    <h2 className="font-display font-black text-5xl md:text-7xl lg:text-8xl leading-[0.9] mb-8 text-white uppercase tracking-tighter mix-blend-difference">
-                        {title}
-                    </h2>
-
-                    <div className={cn("flex", isRight ? "justify-start" : "justify-end")}>
-                         <p className="font-sans text-neutral-400 text-lg md:text-xl max-w-md leading-relaxed text-justify border-l-2 border-[#5d79ae] pl-6">
-                            {description}
-                         </p>
-                    </div>
-                 </div>
-
-                 {/* Decorative Marks */}
-                 <div className="absolute top-4 left-4 w-2 h-2 border-l border-t border-white/50" />
-                 <div className="absolute top-4 right-4 w-2 h-2 border-r border-t border-white/50" />
-                 <div className="absolute bottom-4 left-4 w-2 h-2 border-l border-b border-white/50" />
-                 <div className="absolute bottom-4 right-4 w-2 h-2 border-r border-b border-white/50" />
-            </motion.div>
-        </div>
-    );
-}
-
+// --- Data ---
+const cards = [
+  {
+    id: 'mechanic',
+    title: "Defined By Precision",
+    subtitle: "The Mechanic",
+    description: "Counter-Strike is high-speed chess with ballistics. It is the purest distillation of the FPS genre—where economy management meets pixel-perfect precision.",
+    icon: Target,
+    color: "#7c3aed", // Purple
+    image: "/mechanic.jpg" 
+  },
+  {
+    id: 'phenomenon',
+    title: "Global Warfare",
+    subtitle: "The Phenomenon",
+    description: "From dark LAN cafes to sold-out arenas. The CS ecosystem is a decentralized coliseum that has survived every trend.",
+    icon: Globe,
+    color: "#de9b35", // Yellow
+    image: "/arena.jpg"
+  },
+  {
+    id: 'narrative',
+    title: "The Voice of God",
+    subtitle: "The Narrative",
+    description: "In the chaos of smoke grenades, the Caster translates visual noise into narrative gold. A great frag with a legendary call is history.",
+    icon: Mic,
+    color: "#5d79ae", // Blue
+    image: "/caster.jpg"
+  }
+];
 
 export default function ManifestoSection1() {
+  const [activeIndex, setActiveIndex] = useState(1); // Start with middle card (Phenomenon)
   const containerRef = useRef(null);
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const yBackground = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  // Parallax Offsets for each block
-  const y1 = useTransform(smoothProgress, [0, 1], [100, -100]);
-  const y2 = useTransform(smoothProgress, [0, 1], [200, -200]);
-  const y3 = useTransform(smoothProgress, [0, 1], [150, -150]);
+  // Helper to cycle indices safely
+  const getIndex = (index: number) => {
+    const len = cards.length;
+    return ((index % len) + len) % len;
+  };
+
+  const handleNext = () => setActiveIndex((prev) => getIndex(prev + 1));
+  const handlePrev = () => setActiveIndex((prev) => getIndex(prev - 1));
+
+  // Determine position relative to active
+  const getPosition = (index: number) => {
+    if (index === activeIndex) return 'center';
+    if (index === getIndex(activeIndex - 1)) return 'left';
+    if (index === getIndex(activeIndex + 1)) return 'right';
+    return 'hidden';
+  };
+
+  const variants = {
+    center: { 
+      x: "0%", 
+      scale: 1, 
+      opacity: 1, 
+      zIndex: 20,
+      filter: "blur(0px) brightness(1)",
+      rotateY: 0
+    },
+    left: { 
+      x: "-60%", 
+      scale: 0.8, 
+      opacity: 0.4, 
+      zIndex: 10,
+      filter: "blur(4px) brightness(0.5)",
+      rotateY: 30 
+    },
+    right: { 
+      x: "60%", 
+      scale: 0.8, 
+      opacity: 0.4, 
+      zIndex: 10,
+      filter: "blur(4px) brightness(0.5)",
+      rotateY: -30
+    },
+    hidden: { opacity: 0, scale: 0.5, zIndex: 0 }
+  };
 
   return (
-    <section ref={containerRef} className="relative w-full bg-[#050507] pt-40 pb-40 overflow-hidden">
+    <section ref={containerRef} className="relative min-h-screen w-full bg-[#050507] pt-32 pb-24 flex flex-col justify-center overflow-hidden">
       
-      {/* Background Grid/Noise */}
+      {/* --- Background Atmosphere --- */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] opacity-20" />
-        <div className="absolute left-12 top-0 bottom-0 w-[1px] bg-white/5 hidden md:block" />
-        <div className="absolute right-12 top-0 bottom-0 w-[1px] bg-white/5 hidden md:block" />
-      </div>
-
-      <div className="max-w-[1800px] mx-auto px-6 md:px-12 relative z-10">
-        
-        {/* Section Title - Vertical on Left? Or just Huge? */}
         <motion.div 
-            style={{ x: useTransform(smoothProgress, [0, 1], [-100, 100]) }}
-            className="absolute top-20 left-0 text-[20vw] font-display font-black text-[#101012] whitespace-nowrap select-none -z-10 leading-none"
-        >
-            MANIFESTO ARCHIVE
-        </motion.div>
-
-        <div className="flex flex-col gap-0 md:gap-32">
-            
-            {/* BLOCK 1: MECHANIC */}
-            <EditorialBlock 
-                number="01"
-                subtitle="The Mechanic"
-                title="Defined By Precision"
-                description="Counter-Strike is high-speed chess with ballistics. It is the purest distillation of the FPS genre—where economy management meets pixel-perfect precision, and every corner checked is a gamble with life."
-                align="left"
-                offsetY={y1}
-                visual={<ReticleSVG />}
-            />
-
-            {/* BLOCK 2: PHENOMENON */}
-            <EditorialBlock 
-                number="02"
-                subtitle="The Phenomenon"
-                title="Global Warfare"
-                description="From dark LAN cafes to sold-out arenas. The CS ecosystem is a decentralized coliseum. It is a sport that has survived every trend, powered solely by its unforgivingly high skill ceiling."
-                align="right"
-                offsetY={y2}
-                visual={<GlobeWireframeSVG />}
-            />
-
-            {/* BLOCK 3: NARRATIVE */}
-            <EditorialBlock 
-                number="03"
-                subtitle="The Narrative"
-                title="The Voice of God"
-                description="In the chaos of smoke grenades, the Caster translates visual noise into narrative gold. A great frag is skill; a great frag with a legendary call is history. We are here to honor that voice."
-                align="center"
-                offsetY={y3}
-                visual={<WaveformSVG />}
-            />
-
-        </div>
+            style={{ y: yBackground }} 
+            className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#5d79ae]/5 rounded-full blur-[150px] mix-blend-screen" 
+        />
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03]" />
       </div>
+
+      {/* --- Header --- */}
+      <div className="relative z-30 text-center mb-12 md:mb-20 px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+             <span className="font-tech text-[#de9b35] uppercase tracking-[0.5em] text-xs md:text-sm block mb-4">
+                 Archive Collection
+             </span>
+             <h2 className="font-display font-black text-5xl md:text-7xl text-white tracking-tighter uppercase">
+                 The <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/50">Triad</span>
+             </h2>
+          </motion.div>
+      </div>
+
+      {/* --- Carousel Container --- */}
+      <div className="relative w-full max-w-[1400px] mx-auto h-[500px] md:h-[600px] flex items-center justify-center perspective-[1000px]">
+          
+          {/* Navigation Buttons (Desktop) */}
+          <button onClick={handlePrev} className="absolute left-4 md:left-12 z-40 p-4 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 transition-all group hidden md:block">
+            <ChevronLeft className="w-8 h-8 text-white/50 group-hover:text-white" />
+          </button>
+          <button onClick={handleNext} className="absolute right-4 md:right-12 z-40 p-4 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 transition-all group hidden md:block">
+            <ChevronRight className="w-8 h-8 text-white/50 group-hover:text-white" />
+          </button>
+
+          {/* Cards */}
+          {cards.map((card, index) => {
+            const position = getPosition(index);
+            const isActive = position === 'center';
+            
+            return (
+              <motion.div
+                key={card.id}
+                initial="center"
+                animate={position}
+                variants={variants}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} // Spring-like easing
+                className="absolute w-[85vw] md:w-[65vw] lg:w-[50vw] h-[60vh] md:h-[500px] rounded-3xl overflow-hidden cursor-pointer"
+                onClick={() => {
+                    if (position === 'left') handlePrev();
+                    if (position === 'right') handleNext();
+                }}
+                style={{
+                    perspective: 1000
+                }}
+              >
+                {/* Border & Glow Container */}
+                <div 
+                    className="absolute inset-0 rounded-3xl pointer-events-none transition-all duration-500"
+                    style={{
+                        border: `1px solid ${isActive ? card.color : 'rgba(255,255,255,0.1)'}`,
+                        boxShadow: isActive ? `0 0 60px -10px ${card.color}40` : 'none'
+                    }}
+                />
+
+                {/* Inner Content */}
+                <div className="relative w-full h-full bg-[#0a0a0c] group">
+                    
+                    {/* Image Background */}
+                    <div className="absolute inset-0">
+                        {/* Placeholder if image missing, else actual image */}
+                        <div 
+                            className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                            style={{ 
+                                backgroundImage: `url(${card.image})`,
+                                backgroundColor: '#0a0a0c' // Fallback
+                            }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent opacity-90" />
+                    </div>
+
+                    {/* Content Overlay */}
+                    <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end items-start">
+                        
+                        {/* Icon Badge */}
+                        <div 
+                            className="mb-6 p-3 rounded-lg backdrop-blur-md border transition-colors duration-500"
+                            style={{
+                                backgroundColor: isActive ? `${card.color}20` : 'rgba(255,255,255,0.05)',
+                                borderColor: isActive ? `${card.color}40` : 'rgba(255,255,255,0.1)'
+                            }}
+                        >
+                            <card.icon 
+                                className="w-6 h-6 md:w-8 md:h-8 transition-colors duration-500" 
+                                style={{ color: isActive ? card.color : 'rgba(255,255,255,0.5)' }}
+                            />
+                        </div>
+
+                        {/* Text */}
+                        <div className="max-w-2xl">
+                            <div className="flex items-center gap-4 mb-4">
+                                <span 
+                                    className="font-tech uppercase tracking-[0.2em] text-xs md:text-sm font-bold"
+                                    style={{ color: isActive ? card.color : '#9ca3af' }}
+                                >
+                                    {card.subtitle}
+                                </span>
+                                <div className="h-[1px] w-12 bg-white/20" />
+                            </div>
+                            
+                            <h3 className="font-display font-bold text-3xl md:text-5xl text-white mb-4 leading-[0.9]">
+                                {card.title}
+                            </h3>
+                            
+                            <motion.p 
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: isActive ? 1 : 0, height: isActive ? 'auto' : 0 }}
+                                className="font-sans text-neutral-400 text-sm md:text-lg leading-relaxed overflow-hidden"
+                            >
+                                {card.description}
+                            </motion.p>
+                        </div>
+
+                    </div>
+
+                    {/* Active State Decorations */}
+                    {isActive && (
+                        <>
+                            {/* Corner Accents */}
+                            <div className="absolute top-6 right-6 font-display text-6xl font-bold opacity-10 select-none text-white">
+                                0{index + 1}
+                            </div>
+                            {/* Scanline/Noise overlay optional */}
+                            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.15] mix-blend-overlay pointer-events-none" />
+                        </>
+                    )}
+
+                </div>
+
+              </motion.div>
+            );
+          })}
+
+      </div>
+
+      {/* --- Mobile Indicators --- */}
+      <div className="flex justify-center gap-3 mt-8 md:hidden">
+        {cards.map((_, idx) => (
+            <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    idx === activeIndex ? 'w-8 bg-[#de9b35]' : 'bg-white/20'
+                }`}
+            />
+        ))}
+      </div>
+
     </section>
   );
 }
