@@ -110,7 +110,9 @@ export default function Home() {
           Background color is important to cover the Hero.
           snap-start ensures it snaps into place.
       */}
-      <section id="manifesto" className="relative z-10 w-full bg-[#050507] snap-start border-t border-white/5 shadow-[0_-50px_100px_rgba(0,0,0,0.8)]">
+      <section id="manifesto" className="relative z-10 w-full bg-[#050507] snap-start">
+          {/* Gradient transition from Hero */}
+          <div className="absolute top-[-150px] left-0 w-full h-[150px] bg-gradient-to-b from-transparent to-[#050507] pointer-events-none" />
           <ManifestoSection1 />
       </section>
 
