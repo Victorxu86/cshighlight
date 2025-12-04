@@ -74,18 +74,18 @@ export default function ManifestoSection1() {
     },
     left: { 
       x: "-60%", 
-      scale: 0.8, 
-      opacity: 0.4, 
+      scale: 0.85, 
+      opacity: 0.6, 
       zIndex: 10,
-      filter: "blur(4px) brightness(0.5)",
+      filter: "blur(2px) brightness(0.4)",
       rotateY: 30 
     },
     right: { 
       x: "60%", 
-      scale: 0.8, 
-      opacity: 0.4, 
+      scale: 0.85, 
+      opacity: 0.6, 
       zIndex: 10,
-      filter: "blur(4px) brightness(0.5)",
+      filter: "blur(2px) brightness(0.4)",
       rotateY: -30
     },
     hidden: { opacity: 0, scale: 0.5, zIndex: 0 }
@@ -124,11 +124,11 @@ export default function ManifestoSection1() {
       <div className="relative w-full max-w-[1400px] mx-auto h-[500px] md:h-[600px] flex items-center justify-center perspective-[1000px]">
           
           {/* Navigation Buttons (Desktop) */}
-          <button onClick={handlePrev} className="absolute left-4 md:left-12 z-40 p-4 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 transition-all group hidden md:block">
-            <ChevronLeft className="w-8 h-8 text-white/50 group-hover:text-white" />
+          <button onClick={handlePrev} className="absolute left-4 md:left-8 z-50 p-5 rounded-full bg-white/5 hover:bg-white/20 backdrop-blur-lg border border-white/20 transition-all duration-300 group hidden md:flex items-center justify-center hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+            <ChevronLeft className="w-8 h-8 text-white/70 group-hover:text-white" />
           </button>
-          <button onClick={handleNext} className="absolute right-4 md:right-12 z-40 p-4 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 transition-all group hidden md:block">
-            <ChevronRight className="w-8 h-8 text-white/50 group-hover:text-white" />
+          <button onClick={handleNext} className="absolute right-4 md:right-8 z-50 p-5 rounded-full bg-white/5 hover:bg-white/20 backdrop-blur-lg border border-white/20 transition-all duration-300 group hidden md:flex items-center justify-center hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+            <ChevronRight className="w-8 h-8 text-white/70 group-hover:text-white" />
           </button>
 
           {/* Cards */}
@@ -142,22 +142,24 @@ export default function ManifestoSection1() {
                 initial="center"
                 animate={position}
                 variants={variants}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} // Spring-like easing
-                className="absolute w-[85vw] md:w-[65vw] lg:w-[50vw] h-[60vh] md:h-[500px] rounded-3xl overflow-hidden cursor-pointer"
+                transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }} // Smoother expo easing
+                className="absolute w-[85vw] md:w-[65vw] lg:w-[55vw] h-[60vh] md:h-[550px] rounded-[2rem] overflow-hidden cursor-pointer"
                 onClick={() => {
                     if (position === 'left') handlePrev();
                     if (position === 'right') handleNext();
                 }}
                 style={{
-                    perspective: 1000
+                    perspective: 1500
                 }}
               >
                 {/* Border & Glow Container */}
                 <div 
-                    className="absolute inset-0 rounded-3xl pointer-events-none transition-all duration-500"
+                    className="absolute inset-0 rounded-[2rem] pointer-events-none transition-all duration-700"
                     style={{
-                        border: `1px solid ${isActive ? card.color : 'rgba(255,255,255,0.1)'}`,
-                        boxShadow: isActive ? `0 0 60px -10px ${card.color}40` : 'none'
+                        border: `2px solid ${isActive ? card.color : 'rgba(255,255,255,0.1)'}`,
+                        boxShadow: isActive 
+                            ? `0 0 80px -20px ${card.color}60, inset 0 0 40px -10px ${card.color}30` 
+                            : 'none'
                     }}
                 />
 
