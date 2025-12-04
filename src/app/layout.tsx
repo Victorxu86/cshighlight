@@ -1,16 +1,27 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { DM_Sans, Cinzel } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SmoothScroller from '@/components/SmoothScroller';
 import CustomCursor from '@/components/CustomCursor';
 
-const inter = Inter({ subsets: ['latin'] });
+// Modern Sans-Serif for UI
+const dmSans = DM_Sans({ 
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
+  weight: ['400', '500', '700'] 
+});
 
-export const metadata: Metadata = {
-  title: 'CS Highlights as Sonic Remains',
-  description: 'A digital exhibition exploring Counter-Strike commentary and graffiti as sonic remains.',
+// Elegant Serif/Display for Headings (giving that "Exhibition" feel)
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  variable: '--font-cinzel',
+  weight: ['400', '700', '900']
+});
+
+export const metadata = {
+  title: 'SONIC REMAINS | CS Esports Exhibition',
+  description: 'A digital exhibition exploring the sonic afterlife of Counter-Strike.',
 };
 
 export default function RootLayout({
@@ -19,13 +30,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} min-h-screen bg-[#030304] text-slate-200 antialiased selection:bg-cyan-500/30`}>
+    <html lang="en" className={`${dmSans.variable} ${cinzel.variable}`}>
+      <body className="bg-[#050505] text-white antialiased selection:bg-cyan-500 selection:text-white overflow-x-hidden">
         <SmoothScroller>
-          <div className="bg-noise" />
           <CustomCursor />
           <Navbar />
-          <main className="pt-16 min-h-[calc(100vh-100px)] relative z-10">
+          <main className="relative min-h-screen w-full overflow-hidden">
+             {/* Global Mesh Background - subtle underlay */}
+             <div className="fixed inset-0 z-[-1] opacity-30">
+                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900 blur-[120px] animate-pulse" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+             </div>
             {children}
           </main>
           <Footer />
