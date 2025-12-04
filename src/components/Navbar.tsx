@@ -28,53 +28,54 @@ export default function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      // Increased heights explicitly: h-[180px] -> h-[120px]
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 border-b",
+        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 border-b flex flex-col justify-center",
         scrolled 
-            ? "bg-[#050507]/95 backdrop-blur-xl h-28 border-white/10" 
-            : "bg-transparent h-36 border-white/5"
+            ? "bg-[#050507]/95 backdrop-blur-xl h-[120px] border-white/10" 
+            : "bg-transparent h-[180px] border-white/5"
       )}
     >
-      <div className="w-full h-full max-w-[1800px] mx-auto px-8 md:px-16 flex items-center justify-between relative">
+      <div className="w-full h-full max-w-[1920px] mx-auto px-8 md:px-16 grid grid-cols-12 items-center relative">
         
-        {/* Left: Brand */}
-        <div className="flex-shrink-0">
+        {/* Left: Brand (Col 1-3) */}
+        <div className="col-span-3 flex items-center">
             <Link href="/" className="flex flex-col leading-none group">
-                <span className="font-display font-black text-3xl tracking-tight uppercase text-white group-hover:text-[#7c3aed] transition-colors duration-300">
+                <span className="font-display font-black text-4xl tracking-tight uppercase text-white group-hover:text-[#d8b4fe] transition-colors duration-300">
                   Sonic<span className="text-[#5d79ae] group-hover:text-white transition-colors duration-300">Remains</span>
                 </span>
             </Link>
         </div>
 
-        {/* Center: Navigation - Evenly Distributed */}
-        <nav className="absolute left-1/2 transform -translate-x-1/2 h-full flex items-center gap-12 md:gap-24">
+        {/* Center: Navigation (Col 4-9) */}
+        <nav className="col-span-6 h-full flex items-center justify-between">
           {navItems.map((item) => {
              const isActive = pathname === item.path;
              return (
                <Link 
                  key={item.path} 
                  href={item.path}
-                 className="relative h-full flex items-center justify-center group min-w-[100px]"
+                 className="relative h-full flex-1 flex items-center justify-center group"
                >
-                 {/* Text Label */}
+                 {/* Text: Bold White -> Light Purple Hover */}
                  <span className={cn(
-                   "font-display text-xl font-black uppercase tracking-[0.1em] relative z-10 transition-all duration-300 transform group-hover:scale-105",
-                   isActive ? "text-white" : "text-white/80 group-hover:text-white"
+                   "font-display text-xl font-black uppercase tracking-[0.2em] relative z-10 transition-all duration-300 transform group-hover:scale-110",
+                   // Force white by default, Light Purple on Hover
+                   isActive ? "text-white" : "text-white group-hover:text-[#d8b4fe]"
                  )}>
                    {item.name}
                  </span>
                  
-                 {/* Hover Glow - Subtle Purple */}
-                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                    <div className="w-12 h-12 bg-[#7c3aed] rounded-full blur-[40px] opacity-40" />
+                 {/* Hover Glow Effect (Purple) */}
+                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <div className="w-20 h-20 bg-[#d8b4fe] rounded-full blur-[50px] opacity-20" />
                  </div>
                  
-                 {/* Active Line - Bottom of Header */}
+                 {/* Active Line Bottom - Explicit Height & Z-Index */}
                  {isActive && (
                     <motion.div 
                       layoutId="navline-active" 
-                      className="absolute bottom-0 left-0 right-0 h-[6px] bg-[#de9b35] shadow-[0_0_20px_#de9b35]"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      className="absolute bottom-0 left-0 w-full h-[8px] bg-[#de9b35] shadow-[0_0_20px_#de9b35] z-50"
                     />
                  )}
                </Link>
@@ -82,8 +83,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right: Spacer to balance layout */}
-        <div className="flex-shrink-0 w-[140px]" /> 
+        {/* Right: Spacer (Col 10-12) */}
+        <div className="col-span-3" />
 
       </div>
     </motion.header>
