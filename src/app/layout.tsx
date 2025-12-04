@@ -1,5 +1,6 @@
 import { Inter, Oswald, Rajdhani } from 'next/font/google';
 import './globals.css';
+import SmoothScroll from '@/components/SmoothScroll';
 
 // Primary UI Font
 const inter = Inter({ 
@@ -36,8 +37,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${oswald.variable} ${rajdhani.variable}`}>
       <body className="bg-[#050507] text-white selection:bg-[#de9b35] selection:text-black">
-        <div className="noise-bg" />
-        {children}
+        <SmoothScroll>
+          <div className="noise-bg" />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

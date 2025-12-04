@@ -9,20 +9,28 @@ import ManifestoSection1 from '@/components/ManifestoSection1';
 export default function Home() {
   const containerRef = useRef(null);
   
+  // Track scroll for Hero parallax effects
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
+  // Parallax effects for Hero
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
   return (
-    <main className="bg-[#050507] text-white overflow-x-hidden">
+    <main ref={containerRef} className="bg-[#050507] text-white">
       <Navbar />
 
-      {/* === HERO SECTION === */}
-      <div ref={containerRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      {/* === HERO SECTION (FIXED) === */}
+      {/* Stays fixed in viewport while other content scrolls over it */}
+      <motion.div 
+        style={{ opacity: heroOpacity, scale: heroScale }}
+        className="fixed top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden z-0"
+      >
          
          {/* Background: "SONIC REMAINS" */}
          <motion.div 
@@ -94,11 +102,19 @@ export default function Home() {
                  </motion.div>
              </motion.div>
          </motion.div>
-      </div>
+      </motion.div>
 
-      {/* === MANIFESTO SECTION === */}
-      <div id="manifesto">
-        <ManifestoSection1 />
+      {/* === CONTENT OVERLAY === */}
+      {/* Pushes content down by 100vh to reveal Fixed Hero initially */}
+      <div className="relative z-10 mt-[100vh]">
+          
+          {/* Gradient Transition Overlay */}
+          <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-transparent to-[#050507] -translate-y-full pointer-events-none" />
+          
+          <div id="manifesto" className="bg-[#050507] relative shadow-[0_-50px_100px_rgba(0,0,0,1)]">
+             <ManifestoSection1 />
+          </div>
+          
       </div>
 
     </main>

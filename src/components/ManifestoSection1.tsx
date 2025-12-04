@@ -65,7 +65,7 @@ export default function ManifestoSection1() {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen w-full bg-[#050507] py-24 md:py-32 overflow-hidden border-t border-white/5">
+    <section ref={containerRef} className="relative min-h-screen w-full bg-[#050507] py-24 md:py-32 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div style={{ y: y1 }} className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#7c3aed]/10 rounded-full blur-[120px] mix-blend-screen" />
@@ -127,4 +127,3 @@ export default function ManifestoSection1() {
     </section>
   );
 }
-
