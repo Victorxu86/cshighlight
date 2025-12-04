@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import { ArrowDown } from 'lucide-react';
@@ -9,40 +9,31 @@ import ManifestoSection1 from '@/components/ManifestoSection1';
 export default function Home() {
   const containerRef = useRef(null);
   
+  // Track scroll for Hero parallax effects
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Adding spring physics for damping/smoothness
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
+    offset: ["start start", "end start"]
   });
 
   // Hero Transition Config
-  // 0 to 0.2: Hero stays visible
-  // 0.2 to 0.45: Hero fades out
-  const heroOpacity = useTransform(smoothProgress, [0.2, 0.45], [1, 0]);
-  const heroScale = useTransform(smoothProgress, [0.2, 0.45], [1, 0.9]);
-  const heroFilter = useTransform(smoothProgress, [0.2, 0.45], ["blur(0px)", "blur(10px)"]);
+  // Subtle parallax and fade as the user scrolls down and Manifesto covers it
+  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.3]);
+  const heroFilter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(4px)"]);
   
-  // Manifesto Transition Config
-  // 0.35 to 0.55: Manifesto fades in (overlapping slightly with Hero fade out)
-  const manifestoOpacity = useTransform(smoothProgress, [0.35, 0.55], [0, 1]);
-  const manifestoY = useTransform(smoothProgress, [0.35, 0.55], [100, 0]);
-
   return (
-    <main ref={containerRef} className="bg-[#050507] text-white relative h-[250vh]"> 
-      {/* Increased height to allow for scrolling space */}
+    <main ref={containerRef} className="bg-[#050507] text-white relative w-full"> 
       
       <Navbar />
 
-      {/* === HERO SECTION (Fixed/Sticky) === */}
-      <div className="fixed top-0 left-0 w-full h-screen z-0 overflow-hidden">
+      {/* === HERO SECTION (Sticky) === */}
+      {/* 
+          Sticky positioning ensures it stays in view while the next section scrolls over it.
+          snap-start ensures we land perfectly on it if scrolling back up.
+      */}
+      <section className="sticky top-0 left-0 w-full h-screen z-0 overflow-hidden snap-start">
          <motion.div 
-            style={{ opacity: heroOpacity, scale: heroScale, filter: heroFilter }}
+            style={{ scale: heroScale, opacity: heroOpacity, filter: heroFilter }}
             className="w-full h-full flex items-center justify-center relative"
          >
             {/* Background: "SONIC REMAINS" */}
@@ -110,27 +101,18 @@ export default function Home() {
                 </motion.div>
             </div>
          </motion.div>
-      </div>
+      </section>
 
-      {/* === MANIFESTO SECTION === */}
-      {/* Positioned absolutely/fixed initially, then scrolls naturally? 
-          No, let's keep it simple: We scroll, and via transform we fade it in over the fixed hero.
+      {/* === MANIFESTO SECTION (Relative) === */}
+      {/* 
+          This section is placed normally in the flow.
+          Because Hero is sticky, this section will slide UP over the Hero.
+          Background color is important to cover the Hero.
+          snap-start ensures it snaps into place.
       */}
-      <div className="relative z-10 w-full pointer-events-none">
-          {/* Spacer to push content down */}
-          <div className="h-[100vh]" />
-          
-          <motion.div 
-            id="manifesto"
-            style={{ 
-                opacity: manifestoOpacity,
-                y: manifestoY
-            }}
-            className="pointer-events-auto bg-[#050507]" // Ensure background is solid to cover hero if needed, or keep transparent for blend
-          >
-              <ManifestoSection1 />
-          </motion.div>
-      </div>
+      <section id="manifesto" className="relative z-10 w-full bg-[#050507] snap-start border-t border-white/5 shadow-[0_-50px_100px_rgba(0,0,0,0.8)]">
+          <ManifestoSection1 />
+      </section>
 
     </main>
   );
