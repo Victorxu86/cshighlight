@@ -14,7 +14,7 @@ const cards = [
     description: "Counter-Strike is high-speed chess with ballistics. It is the purest distillation of the FPS genre—where economy management meets pixel-perfect precision.",
     icon: Target,
     color: "#7c3aed", // Purple
-    image: "/mechanic.jpg" 
+    image: "/mechanic.jpg" // public/mechanic.jpg
   },
   {
     id: 'phenomenon',
@@ -23,7 +23,7 @@ const cards = [
     description: "From dark LAN cafes to sold-out arenas. The CS ecosystem is a decentralized coliseum that has survived every trend.",
     icon: Globe,
     color: "#de9b35", // Yellow
-    image: "/arena.jpg"
+    image: "/arena.jpg" // public/arena.jpg
   },
   {
     id: 'narrative',
@@ -32,7 +32,7 @@ const cards = [
     description: "In the chaos of smoke grenades, the Caster translates visual noise into narrative gold. A great frag with a legendary call is history.",
     icon: Mic,
     color: "#5d79ae", // Blue
-    image: "/caster.jpg"
+    image: "/caster.jpg" // public/caster.jpg
   }
 ];
 
@@ -162,6 +162,28 @@ export default function ManifestoSection1() {
                     }}
                 />
 
+                {/* --- Accent Ribbons --- */}
+                {isActive && (
+                  <>
+                    <div 
+                      className="absolute left-6 top-6 h-10 px-4 rounded-full flex items-center gap-2 font-tech text-xs uppercase tracking-[0.25em] z-[65] shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                      style={{
+                        background: `linear-gradient(120deg, ${card.color}80, ${card.color}40)`,
+                        border: `1px solid ${card.color}80`,
+                        color: '#0b0b0f'
+                      }}
+                    >
+                      <card.icon className="w-4 h-4" />
+                      {card.subtitle}
+                    </div>
+                    <div 
+                      className="absolute right-6 top-6 h-10 px-4 rounded-full flex items-center font-display text-sm z-[65] bg-black/50 backdrop-blur-md border border-white/10 text-white/70"
+                    >
+                      0{index + 1}
+                    </div>
+                  </>
+                )}
+
                 {/* --- INNER CONTENT --- */}
                 <div className="relative w-full h-full bg-[#0a0a0c] group overflow-hidden rounded-[2rem] z-0">
                     
@@ -175,8 +197,13 @@ export default function ManifestoSection1() {
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                           priority={index === 1}
                         />
-                        {/* Gradient Overlay - Reduced opacity to ensure image visibility */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent opacity-60" />
+                        {/* Gradient Overlay - keep image visible */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/30 to-transparent opacity-40" />
+                        {/* Diagonal sheen on hover */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-700" style={{
+                          background: "linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
+                          mixBlendMode: "screen"
+                        }} />
                     </div>
 
                     {/* Content Overlay */}
