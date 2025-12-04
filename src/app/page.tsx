@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import { ArrowDown } from 'lucide-react';
@@ -8,28 +8,39 @@ import ManifestoSection1 from '@/components/ManifestoSection1';
 
 export default function Home() {
   const containerRef = useRef(null);
-  const heroRef = useRef(null);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Parallax & Fade Effects for Hero
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
-  const heroFilter = useTransform(scrollYProgress, [0, 0.2], ["blur(0px)", "blur(10px)"]);
+  // Adding spring physics for damping/smoothness
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Hero Transition Config
+  // 0 to 0.2: Hero stays visible
+  // 0.2 to 0.45: Hero fades out
+  const heroOpacity = useTransform(smoothProgress, [0.2, 0.45], [1, 0]);
+  const heroScale = useTransform(smoothProgress, [0.2, 0.45], [1, 0.9]);
+  const heroFilter = useTransform(smoothProgress, [0.2, 0.45], ["blur(0px)", "blur(10px)"]);
   
-  // Manifesto Section Entrance
-  const manifestoY = useTransform(scrollYProgress, [0.1, 0.3], ["100vh", "0vh"]);
-  const manifestoOpacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
+  // Manifesto Transition Config
+  // 0.35 to 0.55: Manifesto fades in (overlapping slightly with Hero fade out)
+  const manifestoOpacity = useTransform(smoothProgress, [0.35, 0.55], [0, 1]);
+  const manifestoY = useTransform(smoothProgress, [0.35, 0.55], [100, 0]);
 
   return (
-    <main ref={containerRef} className="bg-[#050507] text-white relative">
+    <main ref={containerRef} className="bg-[#050507] text-white relative h-[250vh]"> 
+      {/* Increased height to allow for scrolling space */}
+      
       <Navbar />
 
       {/* === HERO SECTION (Fixed/Sticky) === */}
-      <div ref={heroRef} className="h-screen w-full sticky top-0 overflow-hidden z-0">
+      <div className="fixed top-0 left-0 w-full h-screen z-0 overflow-hidden">
          <motion.div 
             style={{ opacity: heroOpacity, scale: heroScale, filter: heroFilter }}
             className="w-full h-full flex items-center justify-center relative"
@@ -101,21 +112,24 @@ export default function Home() {
          </motion.div>
       </div>
 
-      {/* === MANIFESTO SECTION (Overlays Hero) === */}
-      <div className="relative z-10">
-        {/* Spacer to allow scroll time for hero fade */}
-        <div className="h-[20vh]" />
-        
-        <motion.div 
+      {/* === MANIFESTO SECTION === */}
+      {/* Positioned absolutely/fixed initially, then scrolls naturally? 
+          No, let's keep it simple: We scroll, and via transform we fade it in over the fixed hero.
+      */}
+      <div className="relative z-10 w-full pointer-events-none">
+          {/* Spacer to push content down */}
+          <div className="h-[100vh]" />
+          
+          <motion.div 
             id="manifesto"
             style={{ 
                 opacity: manifestoOpacity,
-                y: 0 // Removed y transformation here to rely on normal flow but controlled by spacers/z-index
+                y: manifestoY
             }}
-            className="relative bg-[#050507] min-h-screen"
-        >
-            <ManifestoSection1 />
-        </motion.div>
+            className="pointer-events-auto bg-[#050507]" // Ensure background is solid to cover hero if needed, or keep transparent for blend
+          >
+              <ManifestoSection1 />
+          </motion.div>
       </div>
 
     </main>
