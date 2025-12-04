@@ -115,9 +115,6 @@ export default function ManifestoSection1() {
              <span className="font-tech text-[#de9b35] uppercase tracking-[0.5em] text-xs md:text-sm block mb-4">
                  Archive Collection
              </span>
-             <h2 className="font-display font-black text-5xl md:text-7xl text-white tracking-tighter uppercase">
-                 The <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/50">Triad</span>
-            </h2>
           </motion.div>
             </div>
 
@@ -156,29 +153,30 @@ export default function ManifestoSection1() {
               >
                 {/* --- FULL CARD BORDER & GLOW --- */}
                 <div 
-                    className="absolute inset-0 rounded-[2rem] pointer-events-none z-50 transition-all duration-500"
+                    className="absolute inset-0 rounded-[2rem] pointer-events-none z-[60] transition-all duration-500"
                     style={{
-                        border: isActive ? `3px solid ${card.color}` : '1px solid rgba(255,255,255,0.1)',
+                        border: isActive ? `4px solid ${card.color}` : '1px solid rgba(255,255,255,0.1)',
                         boxShadow: isActive 
-                            ? `0 0 40px ${card.color}, inset 0 0 40px ${card.color}40` 
+                            ? `0 0 50px ${card.color}, inset 0 0 50px ${card.color}40` 
                             : 'none'
                     }}
                 />
 
                 {/* --- INNER CONTENT --- */}
-                <div className="relative w-full h-full bg-[#0a0a0c] group overflow-hidden rounded-[2rem]">
+                <div className="relative w-full h-full bg-[#0a0a0c] group overflow-hidden rounded-[2rem] z-0">
                     
                     {/* Image Background */}
-                    <div className="absolute inset-0">
+                    <div className="absolute inset-0 z-0">
                         <Image 
                           src={card.image} 
                           alt={card.title}
                           fill
+                          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 65vw, 55vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          priority={index === 1} // Load center image first
+                          priority={index === 1}
                         />
-                        {/* Gradient Overlay - Darker at bottom */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/60 to-transparent opacity-80" />
+                        {/* Gradient Overlay - Reduced opacity to ensure image visibility */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent opacity-60" />
                     </div>
 
                     {/* Content Overlay */}

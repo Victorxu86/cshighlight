@@ -31,15 +31,10 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 border-b border-white/5 flex flex-col justify-center",
-        // Changed from h-[40px] to h-[60px] or similar if needed, but strictly top-0
-        // The user asked to keep the bottom position unchanged but move top to screen top.
-        // Since it's fixed top-0, it is already at screen top.
-        // Maybe the user meant the visual 'black bar' height?
-        // Let's ensure it hugs the top.
+        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 flex flex-col justify-center",
         scrolled 
-            ? "bg-[#050507]/95 backdrop-blur-xl py-4" 
-            : "bg-transparent py-6"
+            ? "bg-[#050507]/95 backdrop-blur-xl h-[64px]" 
+            : "bg-transparent h-[64px]"
       )}
     >
       {/* Added overflow-visible to ensure lines outside are seen */}
