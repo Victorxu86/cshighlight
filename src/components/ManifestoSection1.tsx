@@ -79,7 +79,7 @@ export default function ManifestoSection1() {
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   return (
-    <section ref={containerRef} className="relative min-h-screen w-full bg-[#050507] py-24 md:py-32 overflow-hidden">
+    <section ref={containerRef} className="relative min-h-screen w-full bg-[#050507] pt-40 pb-24 md:pt-48 md:pb-32 overflow-hidden">
       
       {/* Background Atmosphere */}
       <div className="absolute inset-0 pointer-events-none">
