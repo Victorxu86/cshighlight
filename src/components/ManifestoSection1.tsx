@@ -13,7 +13,7 @@ const cards = [
     description: "Counter-Strike is high-speed chess with ballistics. It is the purest distillation of the FPS genre—where economy management meets pixel-perfect precision.",
     icon: Target,
     color: "#7c3aed", // Purple
-    image: "/mechanic.jpg" 
+    image: "mechanic.jpg" 
   },
   {
     id: 'phenomenon',
@@ -22,7 +22,7 @@ const cards = [
     description: "From dark LAN cafes to sold-out arenas. The CS ecosystem is a decentralized coliseum that has survived every trend.",
     icon: Globe,
     color: "#de9b35", // Yellow
-    image: "/arena.jpg"
+    image: "arena.jpg"
   },
   {
     id: 'narrative',
@@ -31,7 +31,7 @@ const cards = [
     description: "In the chaos of smoke grenades, the Caster translates visual noise into narrative gold. A great frag with a legendary call is history.",
     icon: Mic,
     color: "#5d79ae", // Blue
-    image: "/caster.jpg"
+    image: "caster.jpg"
   }
 ];
 
@@ -152,16 +152,33 @@ export default function ManifestoSection1() {
                     perspective: 1500
                 }}
               >
-                {/* Border & Glow Container */}
-                <div 
-                    className="absolute inset-0 rounded-[2rem] pointer-events-none transition-all duration-700"
-                    style={{
-                        border: `2px solid ${isActive ? card.color : 'rgba(255,255,255,0.1)'}`,
-                        boxShadow: isActive 
-                            ? `0 0 80px -20px ${card.color}60, inset 0 0 40px -10px ${card.color}30` 
-                            : 'none'
-                    }}
-                />
+                {/* Border & Glow Container (Separated for SVG Border) */}
+                <div className="absolute inset-0 pointer-events-none z-50">
+                   <svg className="w-full h-full" preserveAspectRatio="none">
+                      {/* Animated Glow Border */}
+                      <rect 
+                        x="1" y="1" 
+                        width="99.8%" height="99.6%" 
+                        rx="30" ry="30" // Approximate for 2rem
+                        fill="none" 
+                        stroke={card.color} 
+                        strokeWidth={isActive ? "3" : "0"}
+                        strokeOpacity={isActive ? 1 : 0}
+                        className="transition-all duration-700 ease-out"
+                        style={{
+                            filter: isActive ? `drop-shadow(0 0 15px ${card.color})` : 'none'
+                        }}
+                      />
+                   </svg>
+                   {/* Inner Glow Gradient Overlay */}
+                   <div 
+                        className="absolute inset-0 rounded-[2rem] transition-opacity duration-700"
+                        style={{
+                            boxShadow: isActive ? `inset 0 0 100px -20px ${card.color}40` : 'none',
+                            opacity: isActive ? 1 : 0
+                        }}
+                   />
+                </div>
 
                 {/* Inner Content */}
                 <div className="relative w-full h-full bg-[#0a0a0c] group">
