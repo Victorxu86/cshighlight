@@ -2,85 +2,111 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils'; // I need to create this utility
+import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
   { name: 'Home', path: '/' },
-  { name: 'Project', path: '/about' },
   { name: 'Highlights', path: '/highlights' },
   { name: 'Analysis', path: '/analysis' },
+  { name: 'About', path: '/about' },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050509]/80 backdrop-blur-md">
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b",
+        scrolled ? "bg-[#030304]/80 backdrop-blur-xl border-white/10 py-3" : "bg-transparent border-transparent py-5"
+      )}
+    >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold tracking-tighter text-white">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 group cursor-pointer">
+             <div className="w-3 h-3 bg-cyan-500 rounded-full group-hover:animate-pulse" />
+             <Link href="/" className="text-lg font-bold tracking-tight text-white font-mono uppercase">
               Sonic<span className="text-cyan-400">Remains</span>
             </Link>
           </div>
           
           <div className="hidden md:block">
-            <div className="flex items-baseline space-x-8">
+            <div className="flex items-center space-x-1">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.path}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-cyan-400',
+                    'px-4 py-2 text-sm font-medium transition-all rounded-full relative hover:text-white',
                     pathname === item.path
-                      ? 'text-cyan-400'
-                      : 'text-slate-400'
+                      ? 'text-white'
+                      : 'text-slate-500'
                   )}
                 >
+                  {pathname === item.path && (
+                      <motion.div layoutId="nav-pill" className="absolute inset-0 bg-white/10 rounded-full -z-10" transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
+                  )}
                   {item.name}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="-mr-2 flex md:hidden">
+          <div className="flex md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-white focus:outline-none"
+              className="text-slate-400 hover:text-white"
             >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X /> : <Menu />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden bg-[#050509] border-b border-white/10">
-          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.path}
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  'block rounded-md px-3 py-2 text-base font-medium',
-                  pathname === item.path
-                    ? 'bg-white/5 text-cyan-400'
-                    : 'text-slate-400 hover:bg-white/5 hover:text-white'
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {isOpen && (
+            <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden bg-[#030304] border-b border-white/10 overflow-hidden"
+            >
+            <div className="space-y-1 px-4 pb-6 pt-2">
+                {navItems.map((item) => (
+                <Link
+                    key={item.name}
+                    href={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                    'block py-3 text-lg font-medium border-b border-white/5',
+                    pathname === item.path
+                        ? 'text-cyan-400'
+                        : 'text-slate-400'
+                    )}
+                >
+                    {item.name}
+                </Link>
+                ))}
+            </div>
+            </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }
-
