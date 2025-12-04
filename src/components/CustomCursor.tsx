@@ -12,11 +12,13 @@ export default function CustomCursor() {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
       cursorY.set(e.clientY - 16);
+      setIsVisible(true);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -28,14 +30,22 @@ export default function CustomCursor() {
       }
     };
 
+    const handleMouseOut = () => {
+        setIsVisible(false);
+    }
+
     window.addEventListener('mousemove', moveCursor);
     window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mouseout', handleMouseOut);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('mouseout', handleMouseOut);
     };
   }, [cursorX, cursorY]);
+
+  if (!isVisible) return null;
 
   return (
     <motion.div
@@ -47,16 +57,11 @@ export default function CustomCursor() {
     >
       <motion.div
         animate={{
-          scale: isHovering ? 2.5 : 1,
-          backgroundColor: isHovering ? 'white' : 'transparent',
-          borderWidth: isHovering ? '0px' : '2px',
+          scale: isHovering ? 1.5 : 1,
+          opacity: isHovering ? 0.8 : 0.3,
         }}
-        className="h-8 w-8 rounded-full border-2 border-cyan-400 bg-transparent"
+        className="h-8 w-8 rounded-full border border-cyan-400 bg-transparent"
       />
-      {!isHovering && (
-         <div className="absolute top-1/2 left-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 bg-cyan-400 rounded-full" />
-      )}
     </motion.div>
   );
 }
-

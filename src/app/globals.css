@@ -14,7 +14,7 @@ body {
   background: var(--background);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor for custom one */
+  /* cursor: none; - Removed to fix invisible cursor issue */
 }
 
 /* Noise Overlay */
