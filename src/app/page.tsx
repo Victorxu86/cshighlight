@@ -1,73 +1,15 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar';
+import LandingSection from "@/components/LandingSection";
+import IntroductionSection from "@/components/IntroductionSection";
+import HighlightsSection from "@/components/HighlightsSection";
+import AnalysisSection from "@/components/AnalysisSection";
 
 export default function Home() {
   return (
-    <main className="bg-[#050507] text-white relative w-full min-h-screen">
-      <Navbar />
-
-      {/* Hero 全屏主视觉 */}
-      <section className="relative w-full h-screen overflow-hidden">
-        {/* Background: SONIC REMAINS */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
-          <h1 className="font-display font-bold text-[18vw] leading-none text-[#7c3aed] opacity-40 blur-[4px] tracking-tighter mix-blend-screen">
-            SONIC<br />REMAINS
-          </h1>
-        </div>
-
-        {/* Ambient Light */}
-        <div className="absolute inset-0 pointer-events-none z-10">
-          <div className="absolute top-[20%] left-[15%] w-[40vw] h-[40vw] bg-[#5d79ae] rounded-full blur-[150px] opacity-15 mix-blend-screen" />
-          <div className="absolute bottom-[10%] right-[10%] w-[50vw] h-[50vw] bg-[#de9b35] rounded-full blur-[150px] opacity-10 mix-blend-screen" />
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)]" />
-        </div>
-
-        {/* Foreground Content */}
-        <div className="relative z-20 h-full flex items-center justify-center">
-          <div className="text-center flex flex-col items-center max-w-[90vw]">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex items-center gap-4 mb-2 md:mb-6"
-            >
-              <div className="h-[1px] w-12 bg-[#de9b35]" />
-              <span className="font-tech text-[#de9b35] uppercase tracking-[0.3em] text-xs">
-                Project Archive 2025
-              </span>
-              <div className="h-[1px] w-12 bg-[#de9b35]" />
-            </motion.div>
-
-            <div className="relative">
-              <h2 className="absolute top-2 left-2 font-display font-black text-[12vw] md:text-[13vw] leading-[0.8] tracking-tighter text-black opacity-80 pointer-events-none select-none" aria-hidden="true">
-                COUNTER<br />STRIKE
-              </h2>
-
-              <motion.h2
-                initial={{ scale: 1.1, opacity: 0, filter: 'blur(10px)' }}
-                animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="relative font-display font-black text-[12vw] md:text-[13vw] leading-[0.8] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40 drop-shadow-[0_0_40px_rgba(93,121,174,0.3)]"
-              >
-                COUNTER<br />STRIKE
-              </motion.h2>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="mt-12 md:mt-16"
-            >
-              <p className="font-sans text-neutral-400 text-lg md:text-xl max-w-2xl font-light leading-relaxed text-center px-4">
-                An auditory excavation of <span className="text-[#5d79ae] font-medium">shoutcasting monuments</span> and <span className="text-[#de9b35] font-medium">virtual graffiti</span>.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-    </main>
+    <div className="flex flex-col w-full">
+      <LandingSection />
+      <IntroductionSection />
+      <HighlightsSection />
+      <AnalysisSection />
+    </div>
   );
 }

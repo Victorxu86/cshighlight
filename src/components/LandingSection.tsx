@@ -1,0 +1,76 @@
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+
+export default function LandingSection() {
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen w-full flex flex-col items-center justify-center px-6 overflow-hidden"
+    >
+      {/* Background: Deep dark with subtle gradient/noise */}
+      <div className="absolute inset-0 bg-background z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-40" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center text-center max-w-4xl">
+        {/* Main Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter text-white mb-8"
+        >
+          Echoes of <br className="hidden md:block" />
+          <span className="font-serif italic font-light text-white/80">the Clutch</span>
+        </motion.h1>
+
+        {/* Subtitle / Description */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+          className="space-y-2 mb-12"
+        >
+          <p className="text-base md:text-xl text-muted font-light tracking-wide">
+            Observing cultural memory in esports through commentary and sonic artifacts.
+          </p>
+          <p className="text-sm md:text-base text-muted/60 font-light">
+            A curated exhibition of sound, emotion, and digital history.
+          </p>
+        </motion.div>
+
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+        >
+          <Link
+            href="#highlights"
+            className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden border border-white/10 rounded-full hover:border-white/30 transition-all duration-500"
+          >
+            <span className="absolute inset-0 w-full h-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <span className="relative text-sm tracking-widest uppercase text-white/90 group-hover:text-white transition-colors">
+              Enter Exhibition
+            </span>
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+      >
+        <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+      </motion.div>
+    </section>
+  );
+}
+

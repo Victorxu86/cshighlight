@@ -1,95 +1,69 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-const navItems = [
-  { name: 'Home', path: '/' },
-  { name: 'Gallery', path: '/highlights' },
-  { name: 'Analysis', path: '/analysis' },
+const navLinks = [
+  { name: "Home", href: "#home" },
+  { name: "Introduction", href: "#introduction" },
+  { name: "Highlights", href: "#highlights" },
+  { name: "Analysis", href: "#analysis" },
 ];
 
-const MotionLink = motion.create(Link);
-
 export default function Navbar() {
-  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <motion.header
+    <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 flex flex-col justify-center",
-        scrolled 
-            ? "bg-[#050507]/95 backdrop-blur-xl h-[64px]" 
-            : "bg-transparent h-[64px]"
+        "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 transition-all duration-500 border-b border-transparent",
+        scrolled
+          ? "bg-black/60 backdrop-blur-md border-white/5 py-3"
+          : "bg-transparent"
       )}
     >
-      {/* Added overflow-visible to ensure lines outside are seen */}
-      <div className="w-full h-full max-w-[1920px] mx-auto px-8 md:px-16 grid grid-cols-12 items-center relative overflow-visible">
-        
-        {/* Left: Brand (Col 1-3) */}
-        <div className="col-span-3 flex items-center h-full">
-            <Link href="/" className="flex items-center h-full group text-white">
-                <span className="font-display font-black text-lg tracking-tight uppercase text-white group-hover:text-[#d8b4fe] transition-colors duration-300">
-                  Sonic<span className="text-[#5d79ae] group-hover:text-white transition-colors duration-300">Remains</span>
-                </span>
-            </Link>
-        </div>
-
-        {/* Center: Navigation (Col 4-9) */}
-        <nav className="col-span-6 h-full flex items-center justify-between relative overflow-visible">
-          {navItems.map((item) => {
-             const isActive = pathname === item.path;
-             return (
-               <MotionLink 
-                 key={item.path} 
-                 href={item.path}
-                 initial="initial"
-                 whileHover="hover"
-                 className="relative h-full flex-1 flex items-center justify-center group"
-               >
-                 {/* Text */}
-                 <motion.span 
-                    variants={{
-                      initial: { scale: 1, color: "#FFFFFF" },
-                      hover: { scale: 1.1, color: "#d8b4fe" }
-                    }}
-                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                    className="font-display text-xs font-bold uppercase tracking-[0.2em] relative z-10"
-                 >
-                   {item.name}
-                 </motion.span>
-                 
-                 {/* Active Line - Positioned at 45px */}
-                 {isActive && (
-                    <motion.div 
-                      layoutId="navline-active" 
-                      className="absolute top-[45px] left-0 right-0 mx-auto w-1/2 h-[2px] bg-[#de9b35] shadow-[0_0_10px_#de9b35] z-50"
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                 )}
-               </MotionLink>
-             )
-          })}
-        </nav>
-
-        {/* Right: Spacer (Col 10-12) */}
-        <div className="col-span-3" />
-
+      {/* Left: Site Title */}
+      <div className="flex items-center">
+        <Link 
+          href="/" 
+          className="text-sm md:text-base font-medium tracking-wide text-foreground/90 hover:text-white transition-colors uppercase font-sans"
+        >
+          CS Highlights <span className="text-muted font-serif italic lowercase mx-1">as</span> Sonic Memory
+        </Link>
       </div>
-    </motion.header>
+
+      {/* Right: Navigation */}
+      <div className="hidden md:flex items-center gap-8">
+        {navLinks.map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            className="group relative text-sm text-muted hover:text-white transition-colors duration-300"
+          >
+            {link.name}
+            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
+          </Link>
+        ))}
+      </div>
+      
+      {/* Mobile Menu Placeholder (if needed, keeping it minimal for now) */}
+      <div className="md:hidden">
+          <span className="text-sm text-muted">Menu</span>
+      </div>
+    </motion.nav>
   );
 }
