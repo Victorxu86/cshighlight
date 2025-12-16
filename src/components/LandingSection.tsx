@@ -50,7 +50,7 @@ export default function LandingSection() {
           className="mb-8"
         >
           <h2 className="text-6xl md:text-8xl lg:text-9xl font-serif italic text-white/90 drop-shadow-2xl">
-            Sonic <span className="text-amber-400/90 animate-glow drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">Remains</span>
+            Shoutcasting <span className="text-amber-400/90 animate-glow drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">as Memory</span>
           </h2>
         </motion.div>
 
