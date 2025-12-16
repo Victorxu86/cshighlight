@@ -15,50 +15,50 @@ export interface Highlight {
 export const highlights: Highlight[] = [
   {
     id: "01",
-    title: "The Jumping Double",
-    player: "coldzera",
-    event: "MLG Columbus",
-    year: "2016",
+    title: "The Clutch of a Lifetime",
+    player: "cadiaN",
+    event: "ESL Pro League S13",
+    year: "2021",
     map: "Mirage",
-    quote: "Oh! The jumping double from Cold! What is going on right now?!",
-    description: "A moment that defied physics and probability, shifting the momentum of a major semi-final and immortalizing a graffiti on the B-site walls.",
-    youtubeId: "r2T1a6jGq0s", // Verified ID for Coldzera jumping double
-    audioSrc: "/audio/coldzera.mp3"
+    quote: "You can't do that, cadiaN! You can't do that!",
+    description: "With no armor and a P250, cadiaN wins a 1v4 grand final clutch that defies all logic, securing the trophy for Heroic in the most dramatic fashion possible.",
+    youtubeId: "5vb90Rst5AA",
+    audioSrc: "/audio/cadian.mp3"
   },
   {
     id: "02",
-    title: "The Big Apple Snax",
-    player: "Snax",
-    event: "ESL One New York",
-    year: "2016",
-    map: "Cobblestone",
-    quote: "The Big Apple and Snax is hungry!",
-    description: "A 1v4 pistol round clutch that showcased the intuitive brilliance of the Virtus.pro veteran in a high-stakes grand final.",
-    youtubeId: "R7b8tF-Q8sE", // Verified ID for Snax 1v4
-    audioSrc: "/audio/snax.mp3"
+    title: "The P250 Miracle",
+    player: "ZywOo",
+    event: "IEM Beijing",
+    year: "2020",
+    map: "Mirage",
+    quote: "He's doing it with a P250! ZywOo is unstoppable!",
+    description: "In a pistol round against NaVi, ZywOo showcases superhuman tracking and positioning, dismantling four opponents with just a pistol and 9 HP.",
+    youtubeId: "z5IRTWrEC-U",
+    audioSrc: "/audio/zywoo.mp3"
   },
   {
     id: "03",
-    title: "Happy's Deagle Ace",
-    player: "Happy",
-    event: "DreamHack Open London",
-    year: "2015",
-    map: "Inferno",
-    quote: "Oh and another one! And a third!",
-    description: "A sequence of mechanical perfection and timing through the smoke, creating one of the most viral clips in esports history.",
-    youtubeId: "M0g8eX901g0", // Verified ID for Happy Deagle Ace
-    audioSrc: "/audio/happy.mp3"
+    title: "The Donk Show",
+    player: "donk",
+    event: "IEM Katowice",
+    year: "2024",
+    map: "Nuke",
+    quote: "He is just walking through them! Donk is playing a different game!",
+    description: "The rookie sensation donk announces his arrival on the big stage with a fearless 1v5 ace clutch, aggressively hunting down FaZe Clan one by one.",
+    youtubeId: "VyCImf0Nn6k",
+    audioSrc: "/audio/donk.mp3"
   },
   {
     id: "04",
-    title: "Stewie's B-Site Hold",
-    player: "Stewie2K",
-    event: "ELEAGUE Major Boston",
-    year: "2018",
+    title: "1v5 to Save the Dream",
+    player: "refrezh",
+    event: "ESL Pro League S14",
+    year: "2021",
     map: "Inferno",
-    quote: "But look at the time! ... Stewie's won the round!",
-    description: "The clutch that saved Cloud9 from elimination and propelled them to become the first North American Major champions.",
-    youtubeId: "y1xWkZzO9w8", // Verified ID for Stewie2K B hold
-    audioSrc: "/audio/stewie2k.mp3"
+    quote: "AND HE DOES IT! REFREZH SAVES HEROIC!",
+    description: "With Heroic facing elimination on match point, refrezh pulls off an impossible 1v5 clutch against Liquid, forcing overtime and eventually winning the series.",
+    youtubeId: "X91yLQmj_tA",
+    audioSrc: "/audio/refrezh.mp3"
   },
 ];
